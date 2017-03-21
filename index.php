@@ -25,7 +25,7 @@ return json_decode ($decode3);
 }
 
 $btcUSD2 = getPriceusd2('http://api.coindesk.com/v1/bpi/currentprice.json');
-$btcPriceusd2 = $btcUSD2->bpi->USD->rate;
+$btcPriceusd2 = $btcUSD2->bpi->USD->rate_float;
 
 
 $btcDisplay1 = round($btcPriceusd, 2);
@@ -100,9 +100,45 @@ function tar (input) {
 Cotizacion de Bitcoin</h3>
 				</div>
 				<div class="panel-body">
-USD <?php echo money_format('%.2n', $btcDisplay1); ?> (Bitpay)</br>
-USD <?php echo money_format('%.2n', $btcDisplay3); ?> (Coindesk)</br>
-MXN <?php echo money_format('%.2n', $btcDisplay2); ?> (Bitso)</br>
+				<style>
+				  .padd2 tr td {
+					  padding: 2px 5px;
+					}
+					
+				</style>
+				<?php
+				  $locale = "es_MX";
+					if( is_callable("locale_accept_from_http") ){
+					  $locale = locale_accept_from_http($_SERVER['HTTP_ACCEPT_LANGUAGE']);
+					}
+					$fmt = new NumberFormatter($locale, NumberFormatter::CURRENCY);
+				?>
+				
+				
+				<table class="padd2">
+				<tr>
+				  <td>USD</td>
+					<td style="text-align:right;"><?php  
+					   echo $fmt->formatCurrency($btcDisplay1,  "USD");
+					?> </td>
+					<td>(Bitpay)</td>
+				</tr>
+				<tr>
+				  <td>USD</td>
+					<td style="text-align:right;"><?php  
+					  echo $fmt->formatCurrency($btcDisplay3,  "USD");
+					?> </td>
+					<td>(Coindesk)</td>
+				</tr>
+				<tr>
+				  <td>MXN</td>
+					<td style="text-align:right;"><?php  
+					  echo $fmt->formatCurrency($btcDisplay2,  "MXN");
+					?> </td>
+					<td>(Bitso)</td>
+				</tr>
+
+  </table>
 </div>
 				<div class="panel-footer">
 Recarga automatica cada 5 minutos                                
